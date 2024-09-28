@@ -1,6 +1,10 @@
+![Thumbnail](assets/Thumbnail.png)
+
 # TV Head Mew VS Red Button
 
 For this project I created a very short Pokemon Battle, although it's not the typical PvP you would expect. Rather, it is a PvE: TV HEAD MEW vs RED BUTTON. A battle most exciting that you would have to see for yourself!
+
+![Movie](assets/Movie.mp4)
 
 <details>
   <summary>SPOILER WARNING</summary>
