@@ -4,14 +4,18 @@
 
 I created a very short Pokemon Battle, although it's not the typical PvP you would expect. Rather, it is a PvE: TV HEAD MEW vs RED BUTTON. A battle most exciting that you would have to see for yourself!
 
-![Movie](https://github.com/user-attachments/assets/d5d073f7-9225-444f-b525-7c1017e50dde)
-
 <details>
   <summary>SPOILER WARNING</summary>
   
   RED BUTTON's defeat becomes TV HEAD MEW's victory - as TV HEAD MEW discovers the power of the fragment shader! TV HEAD MEW changes the ADS Fragment shader to a GameBoyColor-inspired shader, the mechanisms of which are described in later sections!
   
 </details>
+GIF:
+![Movie](https://github.com/user-attachments/assets/d5d073f7-9225-444f-b525-7c1017e50dde)
+
+MP4:
+
+https://github.com/user-attachments/assets/2541481b-a225-482f-88f1-2f3cad8b777f
 
 This was the inspiration for the scene - a Pokemon battle in Pokemon GS!
 
