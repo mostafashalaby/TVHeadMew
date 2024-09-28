@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<script id="vertex-shader" type="x-shader/x-vertex">#version 300 es
+
+in vec4 vPosition;
+in vec3 vNormal;
+in vec4 vColor;
+in vec2 vTexCoord;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 normalMatrix;
+uniform mat4 projectionMatrix;
+uniform vec4 lightPosition;
+
+out vec3 fPos; // vertex position in eye coords
+out vec3 fLpos; // light position in eye coords
+out vec3 fN; // vertex normal in eye coords
+out vec2 fTexCoord;
+
+
+void
+main()
+{
+    // Transform vertex position into eye coordinates
+    fPos = (modelViewMatrix * vPosition).xyz;
+
+    //transform normal in eye coordinates
+    fN = normalize( (normalMatrix*vec4(vNormal,0.0)).xyz);
+
+    // pass through light position
+    fLpos = lightPosition.xyz;
+
+    // Transform vertex position in clip coordinates
+    gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+
+    // send texture coordinates from vertex to fragment shader
+    fTexCoord = vTexCoord;
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">#version 300 es
+
+precision mediump float;
+
+uniform vec4 ambientProduct, diffuseProduct, specularProduct;
+uniform float shininess; 
+
+uniform sampler2D curtexture;
+uniform int useTextures;
+uniform int scene;
+uniform int buttonPressed;
+uniform float timestamp;
+uniform int mewFace;
+
+in vec3 fPos;
+in vec3 fLpos;
+in vec3 fN;
+in vec2 fTexCoord;
+layout(location=0) out vec4 fragColor;
+
+vec4 ads(vec3 pos, vec3 lpos, vec3 N) { //blinn-phong model
+    vec3 L = normalize(lpos - pos);
+    vec3 V = normalize(-pos); 
+    vec3 H = normalize(L + V); //halfway vector
+
+    // Compute terms in the illumination equation
+    float lightDotNormal = max( dot(L, N), 0.0 );
+    vec4 diffuse = vec4(0.0, 0.0, 0.0, 1.0);
+    diffuse = diffuseProduct * lightDotNormal;
+   
+    //float reflectedDotViewShiny = pow( max(dot(R, V), 0.0), shininess ); //phong
+    float reflectedDotViewShiny = pow( max(dot(H, N), 0.0), shininess );
+
+    vec4 specular = vec4(0.0, 0.0, 0.0, 1.0);
+    specular = specularProduct * reflectedDotViewShiny;
+   
+    if( dot(L, N) < 0.0 ) {
+        specular = vec4(0.0, 0.0, 0.0, 1.0);
+    }
+    vec4 color = ambientProduct + diffuse + specular;
+    color.a = 1.0 ;
+    return color ;
+}
+
+float dotDensity = 0.03; // Adjust the dot density
+
+vec4 GameBoyColor(vec3 pos, vec3 lpos, vec3 N) {
+    vec3 L = normalize(lpos - pos);
+
+    // Compute terms in the illumination equation
+    // max ensured the value is between 0 and 1
+    float lightDotNormal = max(dot(L, N), 0.0);
+
+    // Step returns 1 if lightDotNormal is >= dotDensity,
+    // otherwise returns 0
+    float shadingLevel = step(dotDensity, lightDotNormal);
+
+    //diffuseProduct represents the color, which is then multiplied by
+    //shadingLevel (0 or 1) to give either a color or pure white
+    vec4 dotColor = diffuseProduct * shadingLevel;
+
+    return dotColor;
+}
+
+void
+main()
+{
+    if (buttonPressed == 1 && mewFace == 0) {
+        if (useTextures == 1) {
+            vec4 texColor = texture(curtexture, fTexCoord);
+            // Convert the texture color to grayscale
+            float gray = dot(texColor.rgb, vec3(0.299, 0.587, 0.114));
+            texColor = vec4(vec3(gray), texColor.a);
+            fragColor = texColor;
+        } else {
+            fragColor = GameBoyColor(fPos,fLpos,fN);
+        }
+    } else {
+        if( useTextures == 1) {
+            fragColor = texture(curtexture, fTexCoord);
+        }
+        else {
+            fragColor = ads(fPos,fLpos,fN);
+        } 
+    }
+}
+</script>
+
+<script type="text/javascript" src="Common/webgl-utils.js"></script>
+<script type="text/javascript" src="Common/initShaders.js"></script>
+
+<script type="text/javascript" src="Common/MV.js"></script>
+<script type="text/javascript" src="objects.js"></script>
+<script type="text/javascript" src="main.js"></script>
+
+
+<body>
+<canvas id="gl-canvas" width="512" height="512">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+
+<br/>
+<br/>
+
+<div id="fps-counter">FPS: </div>
+<div id="animToggleButton">
+    <input id="animToggleButton" type="button" value="Toggle Animation"
+    />
+
+</div><br/>
+
+<div id="perspectiveToggleDiv">
+    <input id="perspectiveToggleButton" type="button" value="Toggle Projection (Orthographic)" />
+</div><br/>
+
+<div id="fovyContainer" style="display: none;">
+    <span>Perspective Projection fovy: <span id="fovyValue">60</span></span>
+    <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="60" class="slider" id="fovyRange">
+    </div>
+</div>
+</body>
+</html>
