@@ -4,7 +4,7 @@
 
 I created a very short Pokemon Battle, although it's not the typical PvP you would expect. Rather, it is a PvE: TV HEAD MEW vs RED BUTTON. A battle most exciting that you would have to see for yourself!
 
-![Movie](assets/Movie.gif)
+![Movie](https://github.com/user-attachments/assets/d5d073f7-9225-444f-b525-7c1017e50dde)
 
 <details>
   <summary>SPOILER WARNING</summary>
