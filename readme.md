@@ -78,4 +78,4 @@ This movie wouldn't have been possible to implement without the help of some ext
 
 # Final Remarks
 
-This assignment was such a great challenge to undertake! Understanding GLSL, especially the vertex and fragment shaders, was as challenging as it was rewarding. I feel like I have a solid grasp on modeling objects from scratch now too, as well as a stronger understanding of the graphics pipeline. I had a strong vision of this movie before making it a reality - and am thankful that I was able to achieve what I wanted.
+This project was such a great challenge to undertake! Understanding GLSL, especially the vertex and fragment shaders, was as challenging as it was rewarding. I feel like I have a solid grasp on modeling objects from scratch now too, as well as a stronger understanding of the graphics pipeline. I had a strong vision of this movie before making it a reality - and am thankful that I was able to achieve what I wanted.
